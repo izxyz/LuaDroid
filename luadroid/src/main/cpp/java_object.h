@@ -1,0 +1,19 @@
+//
+// Created by Karven on 2018/1/27.
+//
+
+#ifndef LUADROID_JAVA_OBJECT_H
+#define LUADROID_JAVA_OBJECT_H
+
+#include "common.h"
+
+class JavaType;
+
+struct JavaObject {
+    jobject object;
+    JavaType *type;
+
+    static int objectGc(lua_State *L);
+};
+
+#endif //LUADROID_JAVA_OBJECT_H
