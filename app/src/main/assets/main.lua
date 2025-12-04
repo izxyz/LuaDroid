@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 log = java.log
 
 log("begin")
@@ -16,14 +17,6 @@ java.import("com.xyz.luadroid.ScriptContext")
 java.import("android.app.Dialog$ListenersHandler")
 java.import("java.lang.System")
 java.import("java.lang.Math")
-
-java.import("com.xyz.luadroid.thread.LuaThreadManager.")
-
-if true then
-    return
-end
-
-
 
 
 local mutex = luathread:newmutex()
@@ -71,26 +64,26 @@ local test0 = function()
 
     local size = 0
 
-    Foo.run(runnable2)
-    Foo.run(runnable1)
-    Foo.run(runnable3)
-    Foo.run(runnable1)
-    Foo.run(runnable3)
-    Foo.run(runnable2)
-        Foo.run(runnable2)
-    Foo.run(runnable1)
-    Foo.run(runnable3)
-    Foo.run(runnable1)
-    Foo.run(runnable3)
-    Foo.run(runnable2)
+    Thread(runnable2).start()
+    Thread(runnable1).start()
+    Thread(runnable3).start()
+    Thread(runnable1).start()
+    Thread(runnable3).start()
+    Thread(runnable2).start()
+    Thread(runnable2).start()
+    Thread(runnable1).start()
+    Thread(runnable3).start()
+    Thread(runnable1).start()
+    Thread(runnable3).start()
+    Thread(runnable2).start()
 
     for i = 1, 1000, 1 do
-        Foo.run(runnable2)
-        Foo.run(runnable1)
-        Foo.run(runnable3)
-        Foo.run(runnable1)
-        Foo.run(runnable3)
-        Foo.run(runnable2)
+        Thread(runnable2).start()
+        Thread(runnable1).start()
+        Thread(runnable3).start()
+        Thread(runnable1).start()
+        Thread(runnable3).start()
+        Thread(runnable2).start()
         -- Thread(runnable2).start()
         -- Thread(runnable1).start()
         -- Thread(runnable3).start()
@@ -130,8 +123,6 @@ local test1 = function()
     luathread.newthread(fun2, {})
 end
 
-test0()
-
-Thread.sleep(1000)
-
-log("end")
+luathread.newthread(function()
+    log("child begin", Thread.currentThread().getName())
+end,{})

@@ -34,7 +34,7 @@ static void *thread_entry(void *arg) {
     lua_remove(child, 1);
     /* detach thread and invoke lua function with args */
     pthread_detach(pthread_self());
-    lua_call(child, n - 1, 0);
+    lua_pcall(child, n - 1, 0, 0);
     /* kill registry reference to thread object */
     lua_pushlightuserdata(child, child);
     lua_pushnil(child);

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     final static String TAG = "xiyuezhen";
 
-    static Context context;
+    ScriptContext context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +46,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        runLua("main.lua");
+
+        runLua("main.lua",false);
     }
 
-    void runLua(String filename) {
-        new Thread(() -> {
+    void runLua(String filename, boolean newThread) {
+        Runnable runnable = () -> {
             try {
 
-                ScriptContext context = new ScriptContext();
+                context = new ScriptContext();
                 context.run("package.cpath = '" + getApplicationInfo().nativeLibraryDir + "/lib?.so;package.cpath'");
                 context.run(copy(filename), MainActivity.this);
-//                context.close();
             } catch (Throwable throwable) {
                 Log.e(TAG, filename, throwable);
             }
-        }).start();
+        };
+        if (newThread) {
+            new Thread(runnable).start();
+        }else {
+            runnable.run();
+        }
+
     }
 
 
