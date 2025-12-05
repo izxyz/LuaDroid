@@ -634,12 +634,6 @@ static bool checkLuaTypeNoThrow(TJNIEnv *env, lua_State *L, JavaType *expected,
     } else {
         if (luaObject.type == T_NIL) return false;
         if (luaObject.type == T_OBJECT) {
-            // 检查 objectRef 和 type 是否有效
-            if (luaObject.objectRef == nullptr || luaObject.objectRef->type == nullptr) {
-                lua_pushstring(L, "Invalid Java object reference");
-                return true;
-            }
-            
             if (luaObject.objectRef->type == expected ||
                 env->IsInstanceOf(luaObject.objectRef->object, expected->getType()))
                 return false;
