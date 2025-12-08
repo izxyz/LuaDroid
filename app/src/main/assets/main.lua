@@ -123,6 +123,4 @@ local test1 = function()
     luathread.newthread(fun2, {})
 end
 
-luathread.newthread(function()
-    log("child begin", Thread.currentThread().getName())
-end,{})
+log("end-->")
