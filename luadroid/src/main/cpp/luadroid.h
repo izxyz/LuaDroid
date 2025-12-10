@@ -50,6 +50,7 @@ enum class ContextStorage {
 };
 
 class JavaType;
+
 class Member;
 
 class ScriptContext;
@@ -62,9 +63,9 @@ private:
     jthrowable pendingJavaError = nullptr;
     void *storage[(int) ContextStorage::LEN] = {nullptr};
 
-    inline JClass getTypeNoCheck(TJNIEnv *env,const String &className) const;
+    inline JClass getTypeNoCheck(TJNIEnv *env, const String &className) const;
 
-    inline JavaType *ensureArrayType(TJNIEnv *env,const char *typeName);
+    inline JavaType *ensureArrayType(TJNIEnv *env, const char *typeName);
 
 public:
 
@@ -130,22 +131,23 @@ public:
         return pendingJavaError != nullptr;
     }
 
-    JClass findClass(TJNIEnv *env,String &&str) {
-        return findClass(env,str);
+    JClass findClass(TJNIEnv *env, String &&str) {
+        return findClass(env, str);
     }
 
-    JClass findClass(TJNIEnv *env,String &str);
+    JClass findClass(TJNIEnv *env, String &str);
 
-    JavaType *ensureType(TJNIEnv *env,const String &typeName);
+    JavaType *ensureType(TJNIEnv *env, const String &typeName);
 
-    jobject proxy(TJNIEnv *env,JavaType *main, Vector<JavaType *> *interfaces,
+    jobject proxy(TJNIEnv *env, JavaType *main, Vector<JavaType *> *interfaces,
                   const Vector<JObject> &principal, Vector<std::unique_ptr<BaseFunction>> &proxy,
                   BaseFunction *defaultFunc = nullptr,
                   bool shared = false, long nativeInfo = 0, jobject superObject = nullptr);
 
-    jvalue luaObjectToJValue(TJNIEnv *env,ValidLuaObject &luaObject, JavaType *type, jobject realType = nullptr);
+    jvalue luaObjectToJValue(TJNIEnv *env, ValidLuaObject &luaObject, JavaType *type,
+                             jobject realType = nullptr);
 
-    jobject luaObjectToJObject(TJNIEnv *env,ValidLuaObject &luaObject);
+    jobject luaObjectToJObject(TJNIEnv *env, ValidLuaObject &luaObject);
 
     JavaType *MapType(TJNIEnv *env);
 
@@ -192,7 +194,7 @@ class ScriptContext {
     JavaType *const floatClass;
     JavaType *const doubleClass;
     JavaType *const voidClass;
-    
+
 public:
     pthread_mutex_t stateMutex;  // 保护主状态机的互斥锁
     lua_State *const state;
@@ -207,13 +209,14 @@ public:
     JavaType *const ObjectClass;
     jobject const javaRef;
 
-    ThreadContext * const threadContext;
+    ThreadContext *const threadContext;
 
     JavaType *ensureType(TJNIEnv *env, jclass type);
 
     ScriptContext(TJNIEnv *env, jobject con);
 
     ~ScriptContext();
+
 private:
     void config(lua_State *L);
 

@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Member;
+import java.lang.reflect.Proxy;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -44,16 +45,12 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("luadroid");
 
 
-
-
-
         runLua("main.lua",false);
     }
 
     void runLua(String filename, boolean newThread) {
         Runnable runnable = () -> {
             try {
-
                 context = new ScriptContext();
                 context.run("package.cpath = '" + getApplicationInfo().nativeLibraryDir + "/lib?.so;package.cpath'");
                 context.run(copy(filename), MainActivity.this);

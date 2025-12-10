@@ -1304,7 +1304,7 @@ public class ScriptContext {
                 interfaces[0] = main;
                 if (leftInterfaces != null)
                     System.arraycopy(leftInterfaces, 0, interfaces, 1, leftInterfaces.length);
-                return Proxy.newProxyInstance(ScriptContext.class.getClassLoader(), interfaces, handler);
+                return Proxy.newProxyInstance(main.getClassLoader(), interfaces, handler);
             } else {
                 ProxyBuilder<?> builder = ProxyBuilder.forClass(main);
                 if (leftInterfaces != null) builder.implementing(leftInterfaces);
