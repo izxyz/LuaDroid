@@ -20,6 +20,6 @@
 * Initializes the LuaThreads library, making available to Lua scripts the
 * newthread, newmutex and newcond functions.
 \*-----------------------------------------------------------------------*/
-LUATHREAD_API int luaopen_luathread(lua_State *L);
+LUATHREAD_API int luaopen_thread(lua_State *L);
 
 #endif

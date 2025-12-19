@@ -1,1 +1,4 @@
 1.context.run可能会执行2次？多次？
+2.如果存在继承关系，callMethod可能会调用到父类所定义的方法？
+3.import->stubbed这样的代码在子线程中会报错，加锁？
+4.java.new("byte[2]").len会直接崩溃而不是报错。

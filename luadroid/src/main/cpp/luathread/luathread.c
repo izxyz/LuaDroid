@@ -152,7 +152,7 @@ static struct luaL_Reg cond_ops[] = {
         {NULL, NULL}
 };
 
-LUATHREAD_API int luaopen_luathread(lua_State *L) {
+LUATHREAD_API int luaopen_thread(lua_State *L) {
     auxiliar_open(L);
     auxiliar_newclass(L, "mutex", mutex_ops);
     auxiliar_newclass(L, "cond", cond_ops);

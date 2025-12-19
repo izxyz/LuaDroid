@@ -44,15 +44,13 @@ public class MainActivity extends AppCompatActivity {
         });
         System.loadLibrary("luadroid");
 
-
         runLua("main.lua",false);
     }
 
     void runLua(String filename, boolean newThread) {
         Runnable runnable = () -> {
             try {
-                context = new ScriptContext();
-                context.run("package.cpath = '" + getApplicationInfo().nativeLibraryDir + "/lib?.so;package.cpath'");
+                context = new ScriptContext(this);
                 context.run(copy(filename), MainActivity.this);
             } catch (Throwable throwable) {
                 Log.e(TAG, filename, throwable);
@@ -63,13 +61,21 @@ public class MainActivity extends AppCompatActivity {
         }else {
             runnable.run();
         }
-
     }
 
 
 
     public File copy(String filename) {
-        File output = new File(getFilesDir(), filename);
+//        File output = new File(getFilesDir(), filename);
+//        try (InputStream is = getAssets().open(filename)) {
+//            Files.copy(is, output.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        } catch (IOException e) {
+//            Log.e(TAG, "copy: ", e);
+//            return null;
+//        }
+//        return output;
+
+        File output = new File(getDir("luadroid",0), filename);
         try (InputStream is = getAssets().open(filename)) {
             Files.copy(is, output.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

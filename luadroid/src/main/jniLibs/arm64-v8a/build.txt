@@ -1,0 +1,5 @@
+make clean
+./Configure android-arm64 -D__ANDROID_API__=28 shared
+make -j8
+llvm-strip -s libssl.so
+llvm-strip -s libcrypto.so

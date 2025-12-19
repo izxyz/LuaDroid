@@ -1,6 +1,8 @@
 package com.xyz.luadroid;
 
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -115,7 +118,29 @@ public class ScriptContext {
     private long nativePtr;
 
     public ScriptContext() {
+        this(null);
+    }
+
+    public ScriptContext(Context context) {
         nativePtr = nativeOpen();
+
+        if (context == null) {
+            return;
+        }
+
+        try {
+            String luadroidDir = context.getDir("luadroid", Context.MODE_PRIVATE).getAbsolutePath();
+            FileUtils.copyAssetsToPath(context.getAssets(), "luadroid", luadroidDir);
+            String libDir = context.getApplicationInfo().nativeLibraryDir;
+            String cmd = "package.cpath = '" +
+                    libDir + "/liblua?.so;" +
+                    "./?.so'\n" +
+                    "package.path = '" +
+                    luadroidDir + "/?.lua;" +
+                    "./?.lua'";
+            run(cmd);
+        } catch (IOException ignored) {
+        }
     }
 
     private native long nativeOpen();

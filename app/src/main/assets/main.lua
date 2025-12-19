@@ -5,7 +5,7 @@ log("begin")
 
 local act = ...
 
-local luathread = require("luathread")
+local luathread = require("thread")
 
 
 java.import("java.lang.Thread")
@@ -122,5 +122,54 @@ local test1 = function()
     luathread.newthread(fun3, {})
     luathread.newthread(fun2, {})
 end
+
+luathread.newthread(function()
+    log("hello-->")
+--     java.import("java.util.Map")
+--     log("byte----", java.type("byte[]"))
+--     log("map", java.type("java.util.Map[]"))
+end,{})
+
+local socket = require("socket.core")
+local mime = require("mime.core")
+local ssl = require("ssl.core")
+
+local openssl = require("openssl")
+local md = openssl.digest.get('sha256')
+local hash = md:digest('hello world')
+
+
+local cjson  = require("cjson")
+local t = {name= "张三",age = 18}
+
+local encode = openssl.base64("张三")
+log("base64编码", encode)
+local decode = openssl.base64(encode,false)
+log("base64解码",decode)
+
+local lfs = require("lfs")
+log("lfs",lfs)
+
+log("cpath", package.cpath)
+log("path", package.path)
+
+local http = require("socket.http")
+local ltn12 = require("ltn12")  -- 用于流处理
+
+
+-- 简单 GET（获取响应体）
+local response_body = {}
+local res, code, response_headers, status = http.request({
+    url = "https://www.baidu.com",
+    method = "GET",
+    sink = ltn12.sink.table(response_body)
+})
+
+if code == 200 then
+    log("Response:", table.concat(response_body))
+else
+    log("Error:", code, status)
+end
+
 
 log("end-->")
