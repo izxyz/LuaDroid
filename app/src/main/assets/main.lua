@@ -150,26 +150,10 @@ log("base64解码",decode)
 local lfs = require("lfs")
 log("lfs",lfs)
 
-log("cpath", package.cpath)
-log("path", package.path)
+local zlib = require("zlib")
 
-local http = require("socket.http")
-local ltn12 = require("ltn12")  -- 用于流处理
-
-
--- 简单 GET（获取响应体）
-local response_body = {}
-local res, code, response_headers, status = http.request({
-    url = "https://www.baidu.com",
-    method = "GET",
-    sink = ltn12.sink.table(response_body)
-})
-
-if code == 200 then
-    log("Response:", table.concat(response_body))
-else
-    log("Error:", code, status)
+for k, v in pairs(zlib) do
+    log(k,v)
 end
-
 
 log("end-->")
